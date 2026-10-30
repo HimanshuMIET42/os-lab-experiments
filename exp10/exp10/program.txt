@@ -1,1 +1,101 @@
+EXPERIMENT 10: PROCESS MANAGEMENT IN LINUX
 
+PROGRAM 1: DISPLAY CURRENT PROCESS ID
+
+Aim:
+To write a C program to display the Process ID (PID) of the currently running process using getpid().
+
+Description:
+1. stdio.h is used for input and output.
+2. unistd.h provides the getpid() system call.
+3. getpid() returns the PID of the current process.
+4. printf() displays the process ID.
+
+Output:
+Current PID: (Process ID)
+CODE:
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+    printf("Current PID:%d\n", getpid());
+    return 0;
+}
+PROGRAM 2: PARENT AND CHILD PROCESS SYNCHRONIZATION
+
+Aim:
+To create a child process using fork() and demonstrate parent-child synchronization using wait().
+
+Description:
+1. fork() creates a new child process.
+2. If fork() returns 0, the child process executes.
+3. The child displays a message and terminates using exit().
+4. The parent uses wait(NULL) to wait for the child.
+5. After child termination, the parent displays the child's PID.
+
+Output:
+Child working...
+Child (PID) reaped successfully!
+CODE:
+#include <stdio.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main() {
+    pid_t p = fork();
+
+    if(p == 0) {
+        printf("Child working...\n");
+        exit(0);
+    }
+    else {
+        pid_t child_pid = wait(NULL);
+        printf("Child %d reaped successfully!\n", child_pid);
+    }
+
+    return 0;
+}
+
+PROGRAM 3: PARENT WAITING FOR CHILD TERMINATION
+
+Aim:
+To demonstrate process creation and termination using fork(), sleep(), wait(), and exit().
+
+Description:
+1. fork() creates a child process.
+2. getpid() retrieves the child's process ID.
+3. The child displays its PID.
+4. sleep(0) executes without introducing any delay.
+5. The child terminates using exit().
+6. The parent waits for the child using wait(NULL).
+7. The parent displays the terminated child's PID.
+
+Output:
+Child Running with PID: (PID)
+Child Exiting...
+Parent Waiting for child to terminate...
+Parent Terminated Child PID: (PID)
+CODE:
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int main() {
+    pid_t p = fork();
+
+    if(p == 0) {
+        printf("Child Running with PID:%d\n", getpid());
+        sleep(0);
+        printf("Child Exiting...\n");
+        exit(0);
+    }
+    else {
+        printf("Parent Waiting for child to terminate...\n");
+        pid_t terminated_pid = wait(NULL);
+        printf("Parent Terminated Child PID:%d\n", terminated_pid);
+    }
+
+    return 0;
+}
