@@ -1,68 +1,174 @@
-# Linux Process Management using C
+# Experiment 10: Process Management in Linux Using C
 
-## Overview
+## 📌 Project Overview
 
-This project demonstrates basic process management concepts in Linux using the C programming language. It consists of three programs that demonstrate process identification, process creation, parent-child synchronization, and process termination.
+This experiment demonstrates the fundamental concepts of **Process Management in Linux** using the C programming language. It focuses on understanding how processes are created, identified, executed, synchronized, and terminated in a Linux operating system.
 
-The programs use Linux system calls to understand how the operating system manages processes.
+The experiment consists of three C programs that use Linux system calls such as `getpid()`, `fork()`, `wait()`, `sleep()`, and `exit()` to demonstrate process management operations.
 
-## Programs Included
+## 🎯 Objectives
 
-### 1. exp10.c – Display Current Process ID
+- To understand the concept of processes in Linux.
+- To retrieve the Process ID (PID) of a running process.
+- To create child processes using the `fork()` system call.
+- To understand the relationship between parent and child processes.
+- To implement process synchronization using `wait()`.
+- To understand process termination and child process reaping.
 
-This program displays the Process ID (PID) of the currently executing process.
+## 🛠️ Technologies and Tools Used
 
-**System calls used:**
-- `getpid()` – Returns the PID of the current process.
+| Component | Technology |
+|---|---|
+| Programming Language | C |
+| Operating System | Ubuntu Linux |
+| Compiler | GCC |
+| Text Editor | GNU Nano |
+| Environment | Linux Terminal / VirtualBox |
 
-### 2. exp10a.c – Process Creation and Synchronization
+## 📂 Project Structure
 
-This program creates a child process using `fork()` and demonstrates how the parent process waits for the child to finish using `wait()`.
+```text
+Experiment-10/
+│
+├── exp10.c
+├── exp10a.c
+├── exp10b.c
+└── README.md
+```
 
-**System calls used:**
-- `fork()` – Creates a child process.
-- `wait()` – Waits for the child process to terminate.
+## 💻 Programs Description
+
+### Program 1: Display Current Process ID (`exp10.c`)
+
+**Objective:** To display the Process ID (PID) of the currently executing process.
+
+**Concept Used:**
+- `getpid()` – Returns the unique Process ID of the currently running process.
+- `printf()` – Displays the process ID on the terminal.
+
+**Working:**
+
+1. The program starts execution through the `main()` function.
+2. The `getpid()` system call retrieves the current process ID.
+3. The PID is displayed using `printf()`.
+4. The program terminates by returning 0.
+
+**Expected Output:**
+
+```text
+Current PID: 1234
+```
+
+*Note: The PID will vary each time the program runs.*
+
+---
+
+### Program 2: Parent-Child Process Synchronization (`exp10a.c`)
+
+**Objective:** To create a child process and demonstrate synchronization between parent and child processes.
+
+**Concept Used:**
+- `fork()` – Creates a new child process.
+- `wait()` – Makes the parent process wait for its child to terminate.
 - `exit()` – Terminates the child process.
 
-### 3. exp10b.c – Parent and Child Process Termination
+**Working:**
 
-This program demonstrates the execution of parent and child processes. The child displays its PID, executes its instructions, and terminates. Meanwhile, the parent waits for the child to complete its execution.
+1. The `fork()` system call creates a child process.
+2. If `fork()` returns 0, the child process executes.
+3. The child displays the message "Child working..." and terminates using `exit(0)`.
+4. The parent process executes the `wait(NULL)` system call.
+5. The parent waits until the child process terminates.
+6. The child's PID is returned by `wait()` and displayed by the parent.
 
-**System calls used:**
+**Expected Output:**
+
+```text
+Child working...
+Child 1235 reaped successfully!
+```
+
+*Note: The PID will vary depending on the system.*
+
+---
+
+### Program 3: Parent Waiting for Child Termination (`exp10b.c`)
+
+**Objective:** To demonstrate process creation, execution, and termination using Linux system calls.
+
+**Concept Used:**
 - `fork()` – Creates a child process.
 - `getpid()` – Retrieves the current process ID.
-- `sleep()` – Suspends execution for a specified duration (zero seconds in this program).
+- `sleep()` – Suspends process execution for a specified duration.
 - `wait()` – Makes the parent wait for child termination.
 - `exit()` – Terminates the child process.
 
-## Technologies Used
+**Working:**
 
-- **Programming Language:** C
-- **Operating System:** Linux (Ubuntu)
-- **Text Editor:** GNU Nano
-- **Compiler:** GCC
+1. The `fork()` system call creates a child process.
+2. The child process identifies itself using `getpid()`.
+3. The child displays its PID.
+4. The `sleep(0)` statement executes without introducing any delay.
+5. The child displays an exit message and terminates using `exit(0)`.
+6. Meanwhile, the parent displays a waiting message.
+7. The parent calls `wait(NULL)` and waits for the child to terminate.
+8. After termination, the parent displays the PID of the terminated child.
 
-## How to Compile and Run
+**Expected Output (illustrative):**
 
-### Step 1: Open the Linux Terminal
+```text
+Parent Waiting for child to terminate...
+Child Running with PID: 1236
+Child Exiting...
+Parent Terminated Child PID: 1236
+```
 
-Navigate to the directory containing the C files.
+*Note: The execution order of parent and child output may vary because both processes execute independently.*
+
+## 📖 Important System Calls Explained
+
+| System Call | Description |
+|---|---|
+| `getpid()` | Returns the PID of the current process. |
+| `fork()` | Creates a new child process. |
+| `wait()` | Waits for a child process to terminate. |
+| `sleep()` | Suspends execution for a specified number of seconds. |
+| `exit()` | Terminates the calling process. |
+
+## ⚙️ Compilation and Execution
+
+### Prerequisites
+
+Make sure GCC is installed on your Linux system.
+
+To install GCC, execute:
+
+```bash
+sudo apt update
+sudo apt install gcc
+```
+
+### Step 1: Navigate to the Project Directory
+
+```bash
+cd Experiment-10
+```
 
 ### Step 2: Compile the Programs
 
-Compile the first program:
+**Program 1:**
 
 ```bash
 gcc exp10.c -o exp10
 ```
 
-Compile the second program:
+**Program 2:**
 
 ```bash
 gcc exp10a.c -o exp10a
 ```
 
-Compile the third program:
+**Program 3:**
 
 ```bash
 gcc exp10b.c -o exp10b
@@ -70,37 +176,45 @@ gcc exp10b.c -o exp10b
 
 ### Step 3: Execute the Programs
 
-Run the first program:
+**Run Program 1:**
 
 ```bash
 ./exp10
 ```
 
-Run the second program:
+**Run Program 2:**
 
 ```bash
 ./exp10a
 ```
 
-Run the third program:
+**Run Program 3:**
 
 ```bash
 ./exp10b
 ```
 
-## Expected Learning Outcomes
+## 📚 Key Learning Outcomes
 
-After completing these programs, we understand:
+After completing this experiment, the following concepts are understood:
 
-1. How to retrieve the PID of a process.
-2. How to create a child process using `fork()`.
-3. How parent and child processes execute.
-4. How to synchronize processes using `wait()`.
-5. How to terminate a process using `exit()`.
-6. How Linux handles child process termination and reaping.
+1. Process identification using Process IDs.
+2. Process creation using the `fork()` system call.
+3. Execution of parent and child processes.
+4. Process synchronization using `wait()`.
+5. Child process termination using `exit()`.
+6. Reaping of terminated child processes by their parent.
+7. Basic understanding of Linux process management.
 
-## Conclusion
+## ✅ Conclusion
 
-This project provides practical knowledge of Linux process management. It demonstrates the use of important system calls and explains how parent and child processes interact during execution.
+This experiment provides practical knowledge of process management in Linux using the C programming language. Through the three programs, we explored process identification, process creation, parent-child relationships, synchronization, and termination.
 
-These concepts form the foundation of process management in operating systems.
+The experiment helped develop a better understanding of how Linux handles multiple processes and manages their execution using system calls.
+
+---
+
+**Experiment:** 10  
+**Subject:** Operating Systems  
+**Platform:** Ubuntu Linux  
+**Language:** C
